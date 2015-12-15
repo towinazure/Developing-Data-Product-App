@@ -18,8 +18,6 @@ library(randomForest)
 library(ggplot2)
 
 iris <- data.frame(iris)
-
-opts_chunk$set(out.width='1400px', out.height = '950px', dpi=600)
 ```
 
 * Let's check the data...
@@ -57,15 +55,16 @@ PCA Transformation III
 * To visualize, we only pick first 2 principal components: __PC1__ and __PC2__
 * We can think of other variables are projected into the 2-dimension which explain the variance most...
 
-```{r PCA_plot2, echo = FALSE, cache = TRUE}
+```{r PCA_plot2, echo = FALSE, cache = TRUE, fig.width = 40, fig.height = 24}
 pca.proj <- data.frame(iris.pca$rotation[, 1:2])
 pca.proj$var.name <- row.names(pca.proj)
 
 ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2)) + 
-  geom_point(aes(colour = Class), size = 4.5) +
+  geom_point(aes(colour = Class), size = 9) +
   geom_segment(data = pca.proj, mapping = aes(x = 0, y = 0, xend = PC1 * 1.5, yend = PC2 * 1.5), size = 1, 
     arrow = grid::arrow(length = grid::unit(0.5, "cm"))) +
-  geom_text(data = pca.proj, aes(x = PC1 * 1.5, label = var.name))
+  geom_text(data = pca.proj, aes(x = PC1 * 1.5, label = var.name), size = 10) +
+    guides(colour = guide_legend(title = "", label.theme = element_text(size = 60, angle = 0)))
 
 ```
 
@@ -73,7 +72,7 @@ Random Forest Classification I (ntree = 1)
 ========================================================
 * When number of trees are low, we can see there is high variance and __unknown__ classes happen more frequently
 
-```{r RF1, result = 'hide', message = FALSE, echo = FALSE}
+```{r RF1, result = 'hide', message = FALSE, echo = FALSE, fig.width = 40, fig.height = 24}
 library(randomForest)
 library(ggplot2)
   
@@ -94,16 +93,19 @@ iris.pca.dat$Correctness[iris.pca.dat$Class != iris.pca.dat$Pred.Class] <- 'Inco
 
 
   ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2, group = Correctness)) + 
-    geom_point(aes(colour = Pred.Class), size = 4.5) +
+    geom_point(aes(colour = Pred.Class), size = 9) +
     scale_colour_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", "#585858")) +
     geom_point(data = iris.pca.dat,
-      aes(colour = Class, shape = Correctness), size = 7) +
-    scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4)) 
+      aes(colour = Class, shape = Correctness), size = 14) +
+    scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4)) +
+  guides(colour = guide_legend(title = "", label.theme = element_text(size = 60, angle = 0)),
+    shape = guide_legend(title = "", label.theme = element_text(size = 60, angle = 0)))
+  
 ```
 
 Random Forest Classification II (ntree = 50)
 ========================================================
-```{r RF2, result = 'hide', message = FALSE, echo = FALSE}
+```{r RF2, result = 'hide', message = FALSE, echo = FALSE, fig.width = 40, fig.height = 24}
 library(randomForest)
 library(ggplot2)
 
@@ -128,11 +130,14 @@ iris.pca.dat$Correctness[iris.pca.dat$Class != iris.pca.dat$Pred.Class] <- 'Inco
 
 
 ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2, group = Correctness)) + 
-  geom_point(aes(colour = Pred.Class), size = 4.5) +
+  geom_point(aes(colour = Pred.Class), size = 9) +
   scale_colour_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", "#585858")) +
   geom_point(data = iris.pca.dat,
-    aes(colour = Class, shape = Correctness), size = 7) +
-  scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4)) 
+    aes(colour = Class, shape = Correctness), size = 14) +
+  scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4)) +
+  guides(colour = guide_legend(title = "", label.theme = element_text(size = 60, angle = 0)),
+    shape = guide_legend(title = "", label.theme = element_text(size = 60, angle = 0)))
+
 ```
 
 * Additional function: user can switch off the indication of correctness...
