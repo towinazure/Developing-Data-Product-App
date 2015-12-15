@@ -1,0 +1,133 @@
+PCA and Random Forest Application on Data Iris
+========================================================
+author: Edwin Ng
+date: December 14th, 2015
+width: 1600
+height: 1200
+autosize: true
+css: RPreCSS.css
+transition: linear
+navigation: slide 
+
+PCA Transformation I
+========================================================
+
+```{r Data Int_Setup, results = 'hide', echo = FALSE, cache = TRUE, message = FALSE}
+data(iris)
+library(randomForest)
+library(ggplot2)
+
+iris <- data.frame(iris)
+
+opts_chunk$set(out.width='1400px', out.height = '800px', dpi=300)
+```
+
+* Let's check the data...
+
+```{r Data Overview, cache = TRUE, echo = FALSE}
+head(iris, n = 5)
+```
+* Due to the non-negative feature, transform the numeric variables by logarithm first
+
+```{r PCA, result = 'hide', message = FALSE, cache = TRUE}
+log.ir <- log(iris[, 1:4])
+ir.species <- iris[, 5]
+
+iris.pca <- prcomp(log.ir, center = TRUE, scale = TRUE)
+
+iris.pca.dat <- data.frame(PC1 = iris.pca$x[, 1], 
+                           PC2 = iris.pca$x[, 2], 
+                           Class = as.character(ir.species))
+```
+
+* __print__ and __plot__ can be directly applied on the PCA object produced by __prcomp__ function
+* Loadings and variance explained on each PC factors are printed and graphed
+
+
+
+PCA Transformation II
+========================================================
+```{r PCA_plot, echo = FALSE, cache = TRUE}
+print(iris.pca)
+plot(iris.pca, type = "l")
+```
+
+PCA Transformation III
+========================================================
+* To visualize, we only pick first 2 principal components: __PC1__ and __PC2__
+* We can think of other variables are projected into the 2-dimension which explain the variance most...
+
+```{r PCA_plot2, echo = FALSE, cache = TRUE}
+pca.proj <- data.frame(iris.pca$rotation[, 1:2])
+pca.proj$var.name <- row.names(pca.proj)
+
+ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2)) + 
+  geom_point(aes(colour = Class), size = 4.5) +
+  geom_segment(data = pca.proj, mapping = aes(x = 0, y = 0, xend = PC1, yend = PC2), size = 1, 
+    arrow = grid::arrow(length = grid::unit(0.5, "cm"))) +
+  geom_text(data = pca.proj, aes(label = var.name))
+```
+
+Random Forest Classification I (ntree = 1)
+========================================================
+* When number of trees are low, we can see there is high variance and __unknown__ classes happen more frequently
+
+```{r RF1, result = 'hide', message = FALSE, echo = FALSE}
+library(randomForest)
+library(ggplot2)
+  
+iris.pca.rf <- randomForest(Class ~ PC1 + PC2,
+                            data=iris.pca.dat, 
+                            importance = FALSE,
+                            proximity = FALSE,
+                            ntree = 1)
+
+iris.pca.dat$Pred.Class <- iris.pca.rf$predicted
+iris.pca.dat$Pred.Class <- as.character(iris.pca.dat$Pred.Class)
+iris.pca.dat$Pred.Class[is.na(iris.pca.dat$Pred.Class)] <- 'unknown'
+iris.pca.dat$Pred.Class  <- as.factor(iris.pca.dat$Pred.Class)
+iris.pca.dat$Pred.Class <- factor(iris.pca.dat$Pred.Class,  levels = c('setosa', 'versicolor', 'virginica', 'unknown'))
+iris.pca.dat$Correctness <- 'Correct'
+levels(iris.pca.dat$Class) <- c('setosa', 'versicolor', 'virginica', 'unknown')
+iris.pca.dat$Correctness[iris.pca.dat$Class != iris.pca.dat$Pred.Class] <- 'Incorrect' 
+
+
+ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2, group = Correctness)) + 
+  geom_point(aes(colour = Pred.Class), size = 4.5) +
+  geom_point(data = iris.pca.dat,
+             aes(colour = Class, shape = Correctness), size = 7) +
+  scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4))
+```
+
+Random Forest Classification II (ntree = 50)
+========================================================
+```{r RF2, result = 'hide', message = FALSE, echo = FALSE}
+library(randomForest)
+library(ggplot2)
+
+iris.pca.dat <- data.frame(PC1 = iris.pca$x[, 1], 
+                           PC2 = iris.pca$x[, 2], 
+                           Class = as.character(ir.species))
+
+iris.pca.rf <- randomForest(Class ~ PC1 + PC2,
+                            data=iris.pca.dat, 
+                            importance = FALSE,
+                            proximity = FALSE,
+                            ntree = 50)
+
+iris.pca.dat$Pred.Class <- iris.pca.rf$predicted
+iris.pca.dat$Pred.Class <- as.character(iris.pca.dat$Pred.Class)
+iris.pca.dat$Pred.Class[is.na(iris.pca.dat$Pred.Class)] <- 'unknown'
+iris.pca.dat$Pred.Class  <- as.factor(iris.pca.dat$Pred.Class)
+iris.pca.dat$Pred.Class <- factor(iris.pca.dat$Pred.Class,  levels = c('setosa', 'versicolor', 'virginica', 'unknown'))
+iris.pca.dat$Correctness <- 'Correct'
+levels(iris.pca.dat$Class) <- c('setosa', 'versicolor', 'virginica', 'unknown')
+iris.pca.dat$Correctness[iris.pca.dat$Class != iris.pca.dat$Pred.Class] <- 'Incorrect' 
+
+
+ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2, group = Correctness)) + 
+  geom_point(aes(colour = Pred.Class), size = 4.5) +
+  geom_point(data = iris.pca.dat,
+             aes(colour = Class, shape = Correctness), size = 7) +
+  scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4))
+```

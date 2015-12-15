@@ -1,6 +1,5 @@
 data(iris)
 library(randomForest)
-library(prcomp)
 library(ggplot2)
 set.seed(1234)
 iris.rf <- randomForest(Species ~ ., 
@@ -13,11 +12,22 @@ iris <- data.frame(iris)
 log.ir <- log(iris[, 1:4])
 ir.species <- iris[, 5]
 iris.pca <- prcomp(log.ir, center = TRUE, scale = TRUE)
+
 iris.pca.dat <- data.frame(PC1 = iris.pca$x[, 1], 
                            PC2 = iris.pca$x[, 2], 
                            Class = as.character(ir.species))
   
 str(iris.pca.dat)
+
+pca.proj <- data.frame(iris.pca$rotation[, 1:2])
+pca.proj$var.name <- row.names(pca.proj)
+
+ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2)) + 
+  geom_point(aes(colour = Class), size = 4.5) +
+  geom_segment(data = pca.proj, mapping = aes(x = 0, y = 0, xend = PC1, yend = PC2), size = 1, 
+    arrow = grid::arrow(length = grid::unit(0.5, "cm"))) +
+  geom_text(data = pca.proj, aes(label = var.name))
+
 
 iris.pca.rf <- randomForest(Class ~ PC1 + PC2,
                             data=iris.pca.dat, 
