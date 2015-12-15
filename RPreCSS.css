@@ -1,0 +1,102 @@
+body {
+	margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+	border: 0px;
+	padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+	background-color: black
+}
+
+h {
+	margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+	padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+	background-color:#B0C4DE;
+	colour: black;
+}
+
+p {
+	margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+	padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+}
+
+.reveal {
+	margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+	border: 0px;
+	padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+	background-color:#B0C4DE;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4{
+	color: black;
+	text-decoration: underline;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6,
+.reveal p {
+   color: black;
+   margin-top: 0px;
+   font-family: "Times New Roman", Serif;
+}
+
+.reveal .section {
+	margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+	border: 0px;
+	padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+	background-color:#B0C4DE;
+	color: black;
+}
+
+.section .reveal h1,
+.section .reveal h2,
+.section .reveal p {
+   color: black;
+   margin-top: 0px;
+}
+
+.section .reveal .state-background {
+   background: #B0C4DE;
+   font-family: "Times New Roman", Serif;
+   color: black;
+}
+
+.title {
+	font-size: 50;
+	color: black;
+	font-style: bold;
+}
