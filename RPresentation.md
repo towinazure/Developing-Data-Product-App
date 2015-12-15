@@ -77,3 +77,5 @@ Random Forest Classification I (ntree = 1)
 Random Forest Classification II (ntree = 50)
 ========================================================
 ![plot of chunk RF2](RPresentation-figure/RF2-1.png) 
+
+* Additional function: user can switch off the indication of correctness...

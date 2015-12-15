@@ -1,4 +1,9 @@
 library(shiny)
+library(ggplot2)
+library(randomForest)
+
+#library(shinyapps)
+# shinyapps::deployApp('C:/Users/Edwin/Desktop/Edwin(10-08-2012)/Assignments and Modules/Coursera/Data Science - John Hopkins/Developing Data Product/Developing-Data-Product-App')
 
 shinyServer(function(input, output, session) {
   
@@ -48,15 +53,18 @@ shinyServer(function(input, output, session) {
       iris.pca.dat.local <- data.frame(buildForest())
       ggplot(data = iris.pca.dat.local, mapping = aes(x = PC1, y = PC2, group = Correctness)) + 
         geom_point(aes(colour = Pred.Class), size = 4.5) +
+        scale_colour_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", "#585858")) +
         geom_point(data = iris.pca.dat.local,
           aes(colour = Class, shape = Correctness), size = 7) +
-        scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4))
+        scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4)) 
       
     }else{
       
       iris.pca.dat.local <- data.frame(buildForest())
       ggplot(data = iris.pca.dat.local, mapping = aes(x = PC1, y = PC2, group = Correctness)) + 
-        geom_point(aes(colour = Pred.Class), size = 4.5)
+        geom_point(aes(colour = Pred.Class), size = 4.5) + 
+        scale_colour_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", "#585858"))
+      
       
     }
     

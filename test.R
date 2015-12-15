@@ -33,7 +33,7 @@ iris.pca.rf <- randomForest(Class ~ PC1 + PC2,
                             data=iris.pca.dat, 
                             importance = FALSE,
                             proximity = FALSE,
-                            ntree = 50)
+                            ntree = 1)
 
 iris.pca.dat$Pred.Class <- iris.pca.rf$predicted
 iris.pca.dat$Pred.Class <- as.character(iris.pca.dat$Pred.Class)
@@ -44,12 +44,14 @@ iris.pca.dat$Correctness <- 'Correct'
 levels(iris.pca.dat$Class) <- c('setosa', 'versicolor', 'virginica', 'unknown')
 iris.pca.dat$Correctness[iris.pca.dat$Class != iris.pca.dat$Pred.Class] <- 'Incorrect' 
 
-
+#   palette(c("#E41A1C", "#377EB8", "#4DAF4A", "#585858",
+#               "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999"))
 ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2, group = Correctness)) + 
   geom_point(aes(colour = Pred.Class), size = 4.5) +
   geom_point(data = iris.pca.dat,
              aes(colour = Class, shape = Correctness), size = 7) +
-  scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4))
+  scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4)) +
+  scale_colour_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", "#585858"))
 
 # palette(c("#E41A1C", "#377EB8", "#4DAF4A", "#585858",
 #           "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999"))

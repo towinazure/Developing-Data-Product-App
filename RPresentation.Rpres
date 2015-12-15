@@ -19,7 +19,7 @@ library(ggplot2)
 
 iris <- data.frame(iris)
 
-opts_chunk$set(out.width='1400px', out.height = '800px', dpi=300)
+opts_chunk$set(out.width='1400px', out.height = '950px', dpi=600)
 ```
 
 * Let's check the data...
@@ -93,11 +93,12 @@ levels(iris.pca.dat$Class) <- c('setosa', 'versicolor', 'virginica', 'unknown')
 iris.pca.dat$Correctness[iris.pca.dat$Class != iris.pca.dat$Pred.Class] <- 'Incorrect' 
 
 
-ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2, group = Correctness)) + 
-  geom_point(aes(colour = Pred.Class), size = 4.5) +
-  geom_point(data = iris.pca.dat,
-             aes(colour = Class, shape = Correctness), size = 7) +
-  scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4))
+  ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2, group = Correctness)) + 
+    geom_point(aes(colour = Pred.Class), size = 4.5) +
+    scale_colour_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", "#585858")) +
+    geom_point(data = iris.pca.dat,
+      aes(colour = Class, shape = Correctness), size = 7) +
+    scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4)) 
 ```
 
 Random Forest Classification II (ntree = 50)
@@ -128,7 +129,10 @@ iris.pca.dat$Correctness[iris.pca.dat$Class != iris.pca.dat$Pred.Class] <- 'Inco
 
 ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2, group = Correctness)) + 
   geom_point(aes(colour = Pred.Class), size = 4.5) +
+  scale_colour_manual(values = c("#E41A1C", "#377EB8", "#4DAF4A", "#585858")) +
   geom_point(data = iris.pca.dat,
-             aes(colour = Class, shape = Correctness), size = 7) +
-  scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4))
+    aes(colour = Class, shape = Correctness), size = 7) +
+  scale_shape_manual(values = c('Correct' = 1, 'Incorrect' = 4)) 
 ```
+
+* Additional function: user can switch off the indication of correctness...
