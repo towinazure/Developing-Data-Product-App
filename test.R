@@ -24,9 +24,9 @@ pca.proj$var.name <- row.names(pca.proj)
 
 ggplot(data = iris.pca.dat, mapping = aes(x = PC1, y = PC2)) + 
   geom_point(aes(colour = Class), size = 4.5) +
-  geom_segment(data = pca.proj, mapping = aes(x = 0, y = 0, xend = PC1, yend = PC2), size = 1, 
+  geom_segment(data = pca.proj, mapping = aes(x = 0, y = 0, xend = PC1 * 1.5, yend = PC2 * 1.5), size = 1, 
     arrow = grid::arrow(length = grid::unit(0.5, "cm"))) +
-  geom_text(data = pca.proj, aes(label = var.name))
+  geom_text(data = pca.proj, aes(x = PC1 * 1.5, label = var.name))
 
 
 iris.pca.rf <- randomForest(Class ~ PC1 + PC2,
